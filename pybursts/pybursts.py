@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 import math
 
-def kleinberg(offsets, s=2, gamma=1):
+def kleinberg(offsets, s=2, gamma=1, g_hat=None):
 
 	if s <= 1:
 		raise ValueError("s must be greater than 1!")
@@ -23,9 +23,10 @@ def kleinberg(offsets, s=2, gamma=1):
 	if not np.all(gaps):
 		raise ValueError("Input cannot contain events with zero time between!")
 
-	T = np.sum(gaps)
-	n = np.size(gaps)
-	g_hat = T / n
+        T = np.sum(gaps)
+        n = np.size(gaps)
+        if g_hat is None:
+            g_hat = T / n
 
 	k = int(math.ceil(float(1 + math.log(T, s) + math.log(1 / np.amin(gaps), s))))
 
@@ -84,7 +85,7 @@ def kleinberg(offsets, s=2, gamma=1):
 
 	burst_counter = -1
 	prev_q = 0
-	stack = np.repeat(np.nan, N)
+	stack = np.zeros(int(N), dtype=int)
 	stack_counter = -1
 	for t in range(n):
 		if q[t] > prev_q:
@@ -94,7 +95,7 @@ def kleinberg(offsets, s=2, gamma=1):
 				bursts[burst_counter, 0] = prev_q + i
 				bursts[burst_counter, 1] = offsets[t]
 				stack_counter += 1
-				stack[stack_counter] = burst_counter
+				stack[stack_counter] = int(burst_counter)
 		elif q[t] < prev_q:
 			num_levels_closed = prev_q - q[t]
 			for i in range(int(num_levels_closed)):
