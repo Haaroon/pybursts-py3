@@ -24,13 +24,14 @@ def kleinberg(offsets, s=2, gamma=1, g_hat=None):
 		raise ValueError("Input cannot contain events with zero time between!")
 
         T = np.sum(gaps)
-        n = np.size(gaps)
         if g_hat is None:
             g_hat = T / n
+	    gamma_log_n = gamma * math.log(n)
+            n = np.size(gaps)
+        else :
+            gamma_log_n = gamma
 
 	k = int(math.ceil(float(1 + math.log(T, s) + math.log(1 / np.amin(gaps), s))))
-
-	gamma_log_n = gamma * math.log(n)
 
 	def tau(i, j):
 		if i >= j:
