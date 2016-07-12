@@ -2,12 +2,16 @@ from __future__ import division
 import numpy as np
 import math
 
-def kleinberg(offsets, s=2, gamma=1, g_hat=None):
+def kleinberg(offsets, s=2, gamma=1, n=None, T=None):
 
 	if s <= 1:
 		raise ValueError("s must be greater than 1!")
 	if gamma <= 0:
 		raise ValueError("gamma must be positive!")
+	if not n is None and n <= 0:
+		raise ValueError("n must be positive!")
+	if not T is None and T <= 0:
+		raise ValueError("T must be positive!")
 	if len(offsets) < 1:
 		raise ValueError("offsets must be non-empty!")
 
@@ -23,14 +27,14 @@ def kleinberg(offsets, s=2, gamma=1, g_hat=None):
 	if not np.all(gaps):
 		raise ValueError("Input cannot contain events with zero time between!")
 
-        T = np.sum(gaps)
-        n = np.size(gaps)
-        if g_hat is None:
-            g_hat = T / n
-	    gamma_log_n = gamma * math.log(n)
-        else :
-            # Fix the cost function and state arrival rate
-            gamma_log_n = gamma
+        if T is None:
+            T = np.sum(gaps)
+
+        if n is None:
+            n = np.size(gaps)
+
+        g_hat = T / n
+        gamma_log_n = gamma * math.log(n)
 
 	k = int(math.ceil(float(1 + math.log(T, s) + math.log(1 / np.amin(gaps), s))))
 
