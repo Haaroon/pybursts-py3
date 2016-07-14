@@ -54,7 +54,7 @@ def kleinberg(offsets, s=2, gamma=1, n=None, T=None):
 	C[0] = 0
 
 	q = np.empty((k, 0))
-	for t in range(n):
+	for t in range(np.size(gaps)):
 		C_prime = np.repeat(float("inf"), k)
 		q_prime = np.empty((k, t+1))
 		q_prime.fill(np.nan)
@@ -82,7 +82,7 @@ def kleinberg(offsets, s=2, gamma=1, n=None, T=None):
 	prev_q = 0
 	
 	N = 0
-	for t in range(n):
+	for t in range(np.size(gaps)):
 		if q[t] > prev_q:
 			N = N + q[t] - prev_q
 		prev_q = q[t]
@@ -93,7 +93,7 @@ def kleinberg(offsets, s=2, gamma=1, n=None, T=None):
 	prev_q = 0
 	stack = np.zeros(int(N), dtype=int)
 	stack_counter = -1
-	for t in range(n):
+	for t in range(np.size(gaps)):
 		if q[t] > prev_q:
 			num_levels_opened = q[t] - prev_q
 			for i in range(int(num_levels_opened)):
@@ -110,7 +110,7 @@ def kleinberg(offsets, s=2, gamma=1, n=None, T=None):
 		prev_q = q[t] 
 
 	while stack_counter >= 0:
-		bursts[stack[stack_counter], 2] = offsets[n]
+		bursts[stack[stack_counter], 2] = offsets[np.size(gaps)]
 		stack_counter -= 1
 
 	return bursts
