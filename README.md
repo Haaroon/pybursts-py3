@@ -42,7 +42,7 @@ print pybursts.kleinberg(offsets, s=2, gamma=0.1)
 * *s*: the base of the exponential distribution that is used for modeling the event frequencies
 * *gamma*: coefficient for the transition costs between states
 
-This version also alows to set n and T in order to have a fixed cost function (not dependent of the given offsets).
+This version also alows to set n and T in order to have a fixed cost function (not dependent of the given offsets). Which is needed if you want to compare bursts for different inputs.
 
 ## Output
 
