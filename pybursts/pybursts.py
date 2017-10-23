@@ -3,18 +3,18 @@ import numpy as np
 import math
 
 def kleinberg(offsets, s=2, gamma=1, n=None, T=None, k=None):
-        """Kleinberg's algorithm (described in 'Bursty and Hierarchical Structure 
-        in Streams'). The algorithm models activity bursts in a time series as an 
-        infinite hidden Markov model.
-        
-        Input:
-            offsets: a list of time offsets (numeric)
-            s: the base of the exponential distribution that is used for modeling 
-            the event frequencies
-            gamma: coefficient for the transition costs between states
-            n, T: to have a fixed cost function (not dependent of the given offsets). 
-            Which is needed if you want to compare bursts for different inputs.
-            k: maximum burst level"""
+    """Kleinberg's algorithm (described in 'Bursty and Hierarchical Structure 
+    in Streams'). The algorithm models activity bursts in a time series as an 
+    infinite hidden Markov model.
+    
+    Input:
+        offsets: a list of time offsets (numeric)
+        s: the base of the exponential distribution that is used for modeling 
+        the event frequencies
+        gamma: coefficient for the transition costs between states
+        n, T: to have a fixed cost function (not dependent of the given offsets). 
+        Which is needed if you want to compare bursts for different inputs.
+        k: maximum burst level"""
 
     if s <= 1:
         raise ValueError("s must be greater than 1!")
@@ -39,17 +39,17 @@ def kleinberg(offsets, s=2, gamma=1, n=None, T=None, k=None):
     if not np.all(gaps):
         raise ValueError("Input cannot contain events with zero time between!")
 
-        if T is None:
-            T = np.sum(gaps)
+    if T is None:
+        T = np.sum(gaps)
 
-        if n is None:
-            n = np.size(gaps)
+    if n is None:
+        n = np.size(gaps)
 
-        g_hat = T / n
-        gamma_log_n = gamma * math.log(n)
+    g_hat = T / n
+    gamma_log_n = gamma * math.log(n)
 
-        if k is None:
-            k = int(math.ceil(float(1 + math.log(T, s) + math.log(1 / np.amin(gaps), s))))
+    if k is None:
+        k = int(math.ceil(float(1 + math.log(T, s) + math.log(1 / np.amin(gaps), s))))
 
     def tau(i, j):
         if i >= j:
