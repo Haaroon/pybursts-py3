@@ -1,2 +1,2 @@
 __all__ = ["pybursts"]
-from pybursts import *
+from .pybursts import *
